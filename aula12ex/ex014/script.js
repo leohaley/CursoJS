@@ -4,7 +4,7 @@ function carregar(){
     var data = new Date()
     //comando abaixo puxa a hora do sistema(pc)
     //var hora = data.getHours()
-    var hora = 21
+    var hora = 5
     msg.innerHTML = `Agora são ${hora} horas.`
     if (hora >= 0 && hora < 12){
         //BOM DIA!
