@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cotação de Criptomoedas</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 50px;
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .card {
+        width: 300px;
+        margin: 20px;
+        background-color: white;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .card-header {
+        background-color: #3f51b5;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+      }
+      .card-body {
+        padding: 20px;
+      }
+      .price {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .change {
+        font-size: 18px;
+        text-align: center;
+      }
+      .positive {
+        color: green;
+      }
+      .negative {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cotação de Criptomoedas</h1>
+    <div class="container">
+      <div class="card">
+        <div class="card-header">Bitcoin</div>
+        <div class="card-body">
+          <div class="price" id="bitcoin-price"></div>
+          <div class="change" id="bitcoin-change"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Ethereum</div>
+        <div class="card-body">
+          <div class="price" id="ethereum-price"></div>
+          <div class="change" id="ethereum-change"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Litecoin</div>
+        <div class="card-body">
+          <div class="price" id="litecoin-price"></div>
+          <div class="change" id="litecoin-change"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function fetchPrice(coin, id) {
+        fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=usd&include_24hr_change=true`)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById(id).innerHTML = `$${data[coin].usd.toLocaleString()}`;
+            let changeElement = document.getElementById(`${coin}-change`);
+            let change = data[coin]["usd_24h_change"];
+            changeElement.innerHTML = `Variação 24h: ${change.toFixed(2)}%`;
+            if (change > 0) {
+              changeElement.classList.add("positive");
+            } else if (change < 0) {
+              changeElement.classList.add("negative");
+            }
+          });
+      }
+      fetchPrice("bitcoin", "bitcoin-price");
+      fetchPrice("ethereum", "ethereum-price");
+      fetchPrice("litecoin", "litecoin-price");
+    </script>
